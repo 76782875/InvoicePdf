@@ -12,7 +12,7 @@
 # Step 2. Add the dependency
  
     dependencies {
-	        implementation 'com.github.mraheel48:InvoicePdf:1.0.1'
+	        implementation 'com.github.mraheel48:InvoicePdf:1.0.2'
      }
 
 # Step 3. Create new object of the Invoice PDF
