@@ -505,14 +505,6 @@ public class InvoicePdf {
 
         if (description.size() == quantity.size() && price.size() == amount.size()) {
 
-            // Toast.makeText(mContext, "Create pdf", Toast.LENGTH_SHORT).show();
-
-            /*//Method call to create pdf
-            invoiceCreate(invoiceName, invoiceDate, invoiceNumber, senderName, senderEmail,
-                    senderAddress, reverseName, reverseEmail, reverseAddress,
-                    description, quantity, price,
-                    amount, shortNote);*/
-
             dataSet = true;
 
             stinvoiceName = invoiceName;
