@@ -83,10 +83,10 @@ public class MainActivity extends AppCompatActivity {
                 obj = new InvoicePdf(MainActivity.this);
 
                 // send data to setData Method
-                obj.setData("pdf", "12/12/2020",
-                        "123", "Raheel", "m.raheel"
-                        , "Fsd", "Shakeel",
-                        "m.raheel", "FSD",
+                obj.setData("PdfName", "12/12/2020",
+                        "#123", "Sender", "senderEmail"
+                        , "Fsd", "Receiver",
+                        "receiverEmail", "FSD",
                         description, quantity, price, amount, "this is the Short note to Save PDF");
 
                 //This Method to Create pdf

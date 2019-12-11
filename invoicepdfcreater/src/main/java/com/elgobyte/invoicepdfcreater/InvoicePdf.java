@@ -23,6 +23,7 @@ import com.itextpdf.text.pdf.PdfPCell;
 import com.itextpdf.text.pdf.PdfPTable;
 import com.itextpdf.text.pdf.PdfWriter;
 
+import java.io.File;
 import java.io.FileOutputStream;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -49,9 +50,9 @@ public class InvoicePdf {
             stsenderName,
             stsenderEmail,
             stsenderAddress,
-            streverseName,
-            streverseEmail,
-            streverseAddress,
+            streceiverName,
+            streceiverEmail,
+            streceiverAddress,
             stshortNote;
 
     private ArrayList<String> ardescription = new ArrayList<>();
@@ -83,9 +84,6 @@ public class InvoicePdf {
             } else {
 
                 Log.d("Allow", " Permission");
-                //Toast.makeText(context, "Premission Allow", Toast.LENGTH_SHORT).show();
-                //pdf();
-
             }
 
         }
@@ -134,10 +132,6 @@ public class InvoicePdf {
             mDoc.addSubject("For Invoice Record manage");
             mDoc.setPageSize(PageSize.A4);
 
-           /* //Add paragraph to teh document
-            Font fTitle = new Font(Font.FontFamily.TIMES_ROMAN.TIMES_ROMAN, 25.0f, Font.NORMAL, BaseColor.BLACK);
-            Font fDate = new Font(Font.FontFamily.TIMES_ROMAN.TIMES_ROMAN, 12.0f, Font.NORMAL, BaseColor.BLACK);
-            Font fName = new Font(Font.FontFamily.TIMES_ROMAN.TIMES_ROMAN, 35.0f, Font.NORMAL, BaseColor.BLACK);*/
 
             //************************************* Create paragraph to add the cell *************************** //
             Paragraph invoice = new Paragraph("Invoice", fName);
@@ -480,9 +474,6 @@ public class InvoicePdf {
 
         return table;
 
-        //Toast.makeText(, "", Toast.LENGTH_SHORT).show();
-
-
     }
     //************************************************************************************************//
 
@@ -499,7 +490,7 @@ public class InvoicePdf {
 
     //***************************Method for get data from user to create pdf****************************//
     public void setData(String invoiceName, String invoiceDate, String invoiceNumber, String senderName, String senderEmail,
-                        String senderAddress, String reverseName, String reverseEmail, String reverseAddress,
+                        String senderAddress, String receiverName, String receiverEmail, String receiverAddress,
                         ArrayList<String> description, ArrayList<String> quantity, ArrayList<Integer> price,
                         ArrayList<Integer> amount, String shortNote) {
 
@@ -513,9 +504,9 @@ public class InvoicePdf {
             stsenderName = senderName;
             stsenderEmail = senderEmail;
             stsenderAddress = senderAddress;
-            streverseName = reverseName;
-            streverseEmail = reverseEmail;
-            streverseAddress = reverseAddress;
+            streceiverName = receiverName;
+            streceiverEmail = receiverEmail;
+            streceiverAddress = receiverAddress;
             ardescription.addAll(description);
             arquantity.addAll(quantity);
             arprice.addAll(price);
@@ -540,11 +531,12 @@ public class InvoicePdf {
 
         if (dataSet) {
 
-            //Method call to create pdf
+            //****************Method call to create pdf**************************//
             invoiceCreate(stinvoiceName, stinvoiceDate, stinvoiceNumber, stsenderName, stsenderEmail,
-                    stsenderAddress, streverseName, streverseEmail, streverseAddress,
+                    stsenderAddress, streceiverName, streceiverEmail, streceiverAddress,
                     ardescription, arquantity, arprice,
                     aramount, stshortNote);
+            //********************************************************************//
 
         } else {
 
@@ -556,7 +548,7 @@ public class InvoicePdf {
     //********************* Create pdf if values get from the user ************************************//
     private void invoiceCreate(String invoiceName, String invoiceDate, String invoiceNumber,
                                String senderName, String senderEmail, String senderAddress,
-                               String reverseName, String reverseEmail, String reverseAddress,
+                               String receiverName, String receiverEmail, String receiverAddress,
                                ArrayList<String> description, ArrayList<String> quantity,
                                ArrayList<Integer> price, ArrayList<Integer> amount,
                                String shortNote) {
@@ -569,11 +561,23 @@ public class InvoicePdf {
                 Locale.getDefault()).format(System.currentTimeMillis());
 
         //pdf file path
-        String FilePath = Environment.getExternalStorageDirectory() + "/" + invoiceName + "\t \t" + mFileName + ".pdf";
+        String FilePath = "/" + invoiceName + "\t \t" + mFileName + ".pdf";
+
+        String folder_main = "InvoicePdf";
+
+        File f = new File(Environment.getExternalStorageDirectory(), folder_main);
+
+        if (!f.exists()) {
+            f.mkdirs();
+        }
+
+
+        File file = new File(f, FilePath);
+
 
         try {
 
-            PdfWriter.getInstance(mDoc, new FileOutputStream(FilePath));
+            PdfWriter.getInstance(mDoc, new FileOutputStream(file));
 
             //Open the Document the write file
             mDoc.open();
@@ -598,19 +602,19 @@ public class InvoicePdf {
             Paragraph from = new Paragraph("FROM:   " + senderName, fDate);
             from.setAlignment(Element.ALIGN_LEFT);
 
-            Paragraph too = new Paragraph("TO:         " + reverseName, fDate);
+            Paragraph too = new Paragraph("TO:         " + receiverName, fDate);
             too.setAlignment(Element.ALIGN_RIGHT);
 
             Paragraph companyEmail = new Paragraph("Email:     " + senderEmail, fDate);
             companyEmail.setAlignment(Element.ALIGN_LEFT);
 
-            Paragraph clientEmail = new Paragraph("Email:     " + reverseEmail, fDate);
+            Paragraph clientEmail = new Paragraph("Email:     " + receiverEmail, fDate);
             clientEmail.setAlignment(Element.ALIGN_RIGHT);
 
             Paragraph companyAddress = new Paragraph("Address:  " + senderAddress, fDate);
             companyAddress.setAlignment(Element.ALIGN_LEFT);
 
-            Paragraph clientAddress = new Paragraph("Address:  " + reverseAddress, fDate);
+            Paragraph clientAddress = new Paragraph("Address:  " + receiverAddress, fDate);
             clientAddress.setAlignment(Element.ALIGN_RIGHT);
 
             Paragraph note = new Paragraph("Notes:", fTitle);
