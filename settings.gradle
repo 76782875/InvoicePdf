@@ -1,0 +1,2 @@
+include ':app', ':invoicepdfcreater'
+rootProject.name='InvoicePdf'
